@@ -1,0 +1,18 @@
+export const UZ_HOME_SERVICE_CATEGORIES = [
+  'Elektrik',
+  'Santexnik',
+  'Konditsioner ustasi',
+  'Maishiy texnika ustasi',
+  'Mebel ustasi',
+  'Eshik-deraza ustasi',
+  "Bo'yoqchi",
+  'Kafel ustasi',
+  'Payvandchi',
+  'Tom ustasi',
+  'Gipsokarton ustasi',
+  'Pol ustasi',
+  'Signalizatsiya/Kamera ustasi',
+  'Internet/Kabel ustasi',
+  'Tozalash xizmati',
+  'Boshqa',
+];

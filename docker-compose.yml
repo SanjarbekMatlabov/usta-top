@@ -1,0 +1,50 @@
+services:
+  database:
+    image: postgres:16-alpine
+    container_name: ustatop-db
+    restart: always
+    environment:
+      POSTGRES_DB: ustatop
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d ustatop"]
+      interval: 5s
+      timeout: 5s
+      retries: 12
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  backend:
+    build:
+      context: ./server
+    container_name: ustatop-backend
+    restart: always
+    env_file:
+      - ./server/.env.example
+    environment:
+      DATABASE_URL: postgresql+psycopg2://postgres:postgres@database:5432/ustatop
+      JWT_SECRET_KEY: change_this_secret
+      CORS_ORIGINS: http://localhost:3000,http://127.0.0.1:3000
+    ports:
+      - "8000:8000"
+    depends_on:
+      database:
+        condition: service_healthy
+
+  frontend:
+    build:
+      context: ./client
+    container_name: ustatop-frontend
+    restart: always
+    environment:
+      VITE_API_URL: http://localhost:8000/api
+    ports:
+      - "3000:5173"
+    depends_on:
+      - backend
+
+volumes:
+  postgres_data:
